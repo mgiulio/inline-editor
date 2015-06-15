@@ -1,24 +1,20 @@
 (function() {
 
 	function install(cfg) {
+		installCSS();
+		
 		var elOriginalDisplayMode;
 		
 		[].slice.call(document.body.querySelectorAll(cfg.selector), 0).forEach(function(el) {
 			var editor = document.createElement('div');
-			editor.style.width = '100%';
-			editor.style.position = 'relative';
-			editor.style.display = 'none';
+			editor.className = 'editor';
 		
 			var textArea = document.createElement('textarea');
-			textArea.style.display = 'block';
-			textArea.style.width = '100%';
 			editor.appendChild(textArea);
 			
 			var okBtn = document.createElement('button');
+			okBtn.className = 'button ok';
 			okBtn.innerHTML = 'save';
-			okBtn.style.position = 'absolute';
-			okBtn.style.left = '0';
-			okBtn.style.top = '100%';
 			okBtn.addEventListener('click', function(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -31,8 +27,7 @@
 					.then(
 						function(processedText) {
 							el.innerHTML = processedText;
-							editor.style.display = 'none';
-							el.style.display = elOriginalDisplayMode;
+							hide();
 						},
 						function(/* rejReason */) {
 							
@@ -54,11 +49,37 @@
 				var text = el.innerHTML;
 				textArea.value = text;
 				
+				show();
+			}, false);
+			
+			function show() {
 				elOriginalDisplayMode = window.getComputedStyle(el, null).display;
 				el.style.display = 'none';
-				editor.style.display = 'inline-block';
-			}, false);
+				
+				editor.classList.add('visible');
+			}
+			
+			function hide() {
+				editor.classList.remove('visible');
+				
+				el.style.display = elOriginalDisplayMode;
+			}
 		});
+	}
+	
+	function installCSS() {
+		var styleEl = document.createElement('style');
+		styleEl.id = "inline-editor-css";
+		document.head.appendChild(styleEl);
+		var sheet = styleEl.sheet;
+		var rules = sheet.rules;
+		
+		sheet.insertRule('.editor { width: 100%; position: relative; display: none; }', rules.length);
+		sheet.insertRule('.editor textarea { width: 100%; display: block; }', rules.length);
+		sheet.insertRule('.editor .button.ok { position: absolute; left: 0; top: 100%; }', rules.length);
+		sheet.insertRule('.editor.visible { display: inline-block; }', rules.length);
+		
+		installCSS = function() {};
 	}
 		
 	var api = {
