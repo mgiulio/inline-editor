@@ -29,10 +29,9 @@ function sendToServer(el, text) {
 		
 		console.log(json);
 		
-		// artificial delay
-		
-		var processedText = text + ' processed';
-		resolve(processedText);
+		setTimeout(function() {
+			resolve(text);
+		}, 2000);
 	});
 	
 }
