@@ -57,6 +57,8 @@
 				el.style.display = 'none';
 				
 				editor.classList.add('visible');
+				
+				textArea.select();
 			}
 			
 			function hide() {
