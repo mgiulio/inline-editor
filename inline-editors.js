@@ -43,10 +43,6 @@
 				show();
 			}
 			
-			function cancel(e) {
-				console.log('cancel');
-			}
-			
 			function submit(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -59,6 +55,7 @@
 					.then(
 						function(processedText) {
 							el.editable.innerHTML = processedText;
+							el.editor.classList.remove('blocked');
 							hide();
 						},
 						function(/* rejReason */) {
@@ -66,9 +63,16 @@
 						}
 					)
 					.then(function() {
-						el.editor.classList.remove('blocked');
+						//el.editor.classList.remove('blocked');
 					})
 				;
+			}
+			
+			function cancel(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				hide();
 			}
 			
 			function show() {
