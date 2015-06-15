@@ -1,7 +1,7 @@
 (function() {
 	
 	var 
-		forEach = Array.prototype.forEach
+		filter = Array.prototype.filter
 	;
 	
 	function install(cfg) {
@@ -12,12 +12,9 @@
 			editables = document.querySelectorAll(cfg.selector) 
 		;
 		
-		forEach.call(editables, installEditor);
+		filter.call(editables, function(el) { return !isInstalled(el); }).forEach(installEditor);
 		
 		function installEditor(editableEl) {
-			if (isInstalled(editableEl))
-				return;
-			
 			var el = {
 				editable: editableEl
 			};
