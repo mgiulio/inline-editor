@@ -5,45 +5,57 @@
 		
 		var elOriginalDisplayMode;
 		
-		[].slice.call(document.body.querySelectorAll(cfg.selector), 0).forEach(function(el) {
-			var editor = document.createElement('div');
-			editor.className = 'editor';
-		
-			var textArea = document.createElement('textarea');
-			editor.appendChild(textArea);
+		[].slice.call(document.body.querySelectorAll(cfg.selector), 0).forEach(function(editableEl) {
+			var el = {
+				editable: editableEl
+			};
 			
-			var okBtn = document.createElement('button');
-			okBtn.className = 'button ok';
-			okBtn.innerHTML = 'save';
-			okBtn.addEventListener('click', submit, false);
-			editor.appendChild(okBtn);
+			el.editor = document.createElement('div');
+			el.editor.className = 'editor';
+			el.editor.innerHTML = `
+				<textarea></textarea>
+				<div class="toolbar">
+					<button class="button submit">Save</button>
+					<button class="button cancel">Cancel</button>
+				</div>
+			`;
 			
-			el.parentNode.insertBefore(editor, el.nextSibling);
+			el.textArea = el.editor.querySelector('textArea');
+			el.submit = el.editor.querySelector('.button.submit');
+			el.cancel = el.editor.querySelector('.button.cancel');
 			
-			el.addEventListener('click', enterEditMode, false);
+			el.editable.addEventListener('click', enterEditMode, false);
+			el.submit.addEventListener('click', submit, false);
+			el.cancel.addEventListener('click', cancel, false);
+			
+			el.editable.parentNode.insertBefore(el.editor, el.editable.nextSibling);
 			
 			function enterEditMode(e) {
 				e.preventDefault();
 				e.stopPropagation();
 		
-				var text = el.innerHTML;
-				textArea.value = text;
+				var text = el.editable.innerHTML;
+				el.textArea.value = text;
 				
 				show();
+			}
+			
+			function cancel(e) {
+				console.log('cancel');
 			}
 			
 			function submit(e) {
 				e.preventDefault();
 				e.stopPropagation();
 				
-				editor.classList.add('blocked');
+				el.editor.classList.add('blocked');
 				
-				var newText = textArea.value;
+				var newText = el.textArea.value;
 				
-				cfg.processNewText(el, newText)
+				cfg.processNewText(el.editable, newText)
 					.then(
 						function(processedText) {
-							el.innerHTML = processedText;
+							el.editable.innerHTML = processedText;
 							hide();
 						},
 						function(/* rejReason */) {
@@ -51,24 +63,24 @@
 						}
 					)
 					.then(function() {
-						editor.classList.remove('blocked');
+						el.editor.classList.remove('blocked');
 					})
 				;
 			}
 			
 			function show() {
-				elOriginalDisplayMode = window.getComputedStyle(el, null).display;
-				el.style.display = 'none';
+				elOriginalDisplayMode = window.getComputedStyle(el.editable, null).display;
+				el.editable.style.display = 'none';
 				
-				editor.classList.add('visible');
+				el.editor.classList.add('visible');
 				
-				textArea.select();
+				el.textArea.select();
 			}
 			
 			function hide() {
-				editor.classList.remove('visible');
+				el.editor.classList.remove('visible');
 				
-				el.style.display = elOriginalDisplayMode;
+				el.editable.style.display = elOriginalDisplayMode;
 			}
 		});
 	}
@@ -87,10 +99,10 @@
 				width: 100%; 
 				display: block; 
 			}
-			.editor .button.ok { 
-				position: absolute; 
-				left: 0; 
-				top: 100%; 
+			.editor .toolbar { 
+				background: #e6e2e2;
+				padding: 5px;
+				text-align: center;
 			}
 			.editor.visible { 
 				display: inline-block; 
