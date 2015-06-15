@@ -1,11 +1,20 @@
 (function() {
+	
+	var 
+		forEach = Array.prototype.forEach
+	;
 
 	function install(cfg) {
 		installCSS();
 		
-		var elOriginalDisplayMode;
+		var 
+			elOriginalDisplayMode,
+			editables = document.querySelectorAll(cfg.selector) 
+		;
 		
-		[].slice.call(document.body.querySelectorAll(cfg.selector), 0).forEach(function(editableEl) {
+		forEach.call(editables, installEditor);
+		
+		function installEditor(editableEl) {
 			var el = {
 				editable: editableEl
 			};
@@ -89,7 +98,7 @@
 				
 				el.editable.style.display = elOriginalDisplayMode;
 			}
-		});
+		}
 	}
 	
 	function installCSS() {
