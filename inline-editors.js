@@ -76,14 +76,30 @@
 	function installCSS() {
 		var styleEl = document.createElement('style');
 		styleEl.id = "inline-editor-css";
-		document.head.appendChild(styleEl);
-		var sheet = styleEl.sheet;
-		var rules = sheet.rules;
 		
-		sheet.insertRule('.editor { width: 100%; position: relative; display: none; }', rules.length);
-		sheet.insertRule('.editor textarea { width: 100%; display: block; }', rules.length);
-		sheet.insertRule('.editor .button.ok { position: absolute; left: 0; top: 100%; }', rules.length);
-		sheet.insertRule('.editor.visible { display: inline-block; }', rules.length);
+		var css = `
+			.editor { 
+				width: 100%; 
+				position: relative; 
+				display: none; 
+			}
+			.editor textarea { 
+				width: 100%; 
+				display: block; 
+			}
+			.editor .button.ok { 
+				position: absolute; 
+				left: 0; 
+				top: 100%; 
+			}
+			.editor.visible { 
+				display: inline-block; 
+			}
+		`;
+		
+		styleEl.textContent = css;
+		
+		document.head.appendChild(styleEl);
 		
 		installCSS = function() {};
 	}
