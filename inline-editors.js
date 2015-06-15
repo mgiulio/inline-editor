@@ -36,7 +36,7 @@
 				e.preventDefault();
 				e.stopPropagation();
 				
-				console.log('block UI');
+				editor.classList.add('blocked');
 				
 				var newText = textArea.value;
 				
@@ -51,7 +51,7 @@
 						}
 					)
 					.then(function() {
-						console.log('unblok UI');
+						editor.classList.remove('blocked');
 					})
 				;
 			}
@@ -79,8 +79,8 @@
 		
 		var css = `
 			.editor { 
-				width: 100%; 
 				position: relative; 
+				width: 100%; 
 				display: none; 
 			}
 			.editor textarea { 
@@ -94,6 +94,15 @@
 			}
 			.editor.visible { 
 				display: inline-block; 
+			}
+			.editor.visible.blocked:after {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0, 0.5);
 			}
 		`;
 		
