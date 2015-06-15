@@ -64,15 +64,14 @@
 					.then(
 						function(processedText) {
 							el.editable.innerHTML = processedText;
-							el.editor.classList.remove('blocked');
-							hide();
-						},
-						function(/* rejReason */) {
 							
+						},
+						function() {
 						}
 					)
 					.then(function() {
-						//el.editor.classList.remove('blocked');
+						el.editor.classList.remove('blocked');
+						hide();
 					})
 				;
 			}
