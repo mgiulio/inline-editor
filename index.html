@@ -2,27 +2,57 @@
 <html>
 
 <head>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
-<h1 class="editable">Title</h1>
-<p>A paragraph</p>
-<aside class="widget about">
-	<h2 class="title editable">About Me</h2>
-	<img class="avatar">
-	<p class="desc editable">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
-</aside>
+<header>
+	<h1 class="editable">mgiulio</h1>
+	<p>A paragraph</p>
+</header>
+
+<section class="main">
+	<h1>Tweets</h1>
+	<p>A paragraph</p>
+</section>
+
+<section class="aux">
+	<aside class="widget about">
+		<h2 class="title editable">About Me</h2>
+		<img class="avatar">
+		<p class="desc editable">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
+	</aside>
+</section>
+
+<footer>
+</footer>
 
 <script src="inline-editors.js"></script>
 <script>
 inlineEditor.install({
-	selector: '.editable',
+	selector: 'header .editable',
 	processNewText: sendToServer,
 	activityIndicator: {
-		message: 'Saving...'
+		message: 'Saving header...'
 	}
 });
-// inlineEditor.uninstall('.editable');
+
+inlineEditor.install({
+	selector: '.aux .editable',
+	processNewText: sendToServer,
+	activityIndicator: {
+		message: 'Saving aux...'
+	}
+});
+
+inlineEditor.install({
+	selector: '.aux .editable',
+	processNewText: sendToServer,
+	activityIndicator: {
+		message: 'Saving aux1...'
+	}
+})
+
 
 function sendToServer(el, text) {
 	return new Promise(function(resolve, reject) {

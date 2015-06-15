@@ -3,7 +3,7 @@
 	var 
 		forEach = Array.prototype.forEach
 	;
-
+	
 	function install(cfg) {
 		installCSS();
 		
@@ -15,6 +15,9 @@
 		forEach.call(editables, installEditor);
 		
 		function installEditor(editableEl) {
+			if (isInstalled(editableEl))
+				return;
+			
 			var el = {
 				editable: editableEl
 			};
@@ -98,6 +101,15 @@
 				el.editable.style.display = elOriginalDisplayMode;
 			}
 		}
+	}
+	
+	function isInstalled(editableEl) {
+		var nextEl = editableEl.nextElementSibling;
+		
+		if (!nextEl)
+			return false;
+		
+		return nextEl.classList.contains('editor');
 	}
 	
 	function installCSS() {
