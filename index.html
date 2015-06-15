@@ -1,0 +1,43 @@
+<html>
+
+<head>
+</head>
+
+<body>
+<h1>Title</h1>
+<p>A paragraph</p>
+<aside class="widget about">
+	<h2 class="title">About Me</h2>
+	<img class="avatar">
+	<p class="desc editable">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
+</aside>
+
+<script src="gator.js"></script>
+<script src="inline-editors.js"></script>
+<script>
+inlineEditor.install({
+	selector: '.editable',
+	processNewText: sendToServer
+});
+// inlineEditor.uninstall('.editable');
+
+function sendToServer(el, text) {
+	return new Promise(function(resolve, reject) {
+		var json = {
+			el: el,
+			text: text
+		};
+		
+		console.log(json);
+		
+		// artificial delay
+		
+		var processedText = text + ' processed';
+		resolve(processedText);
+	});
+	
+}
+</script>
+</body>
+
+</html>
