@@ -15,7 +15,24 @@
 			var okBtn = document.createElement('button');
 			okBtn.className = 'button ok';
 			okBtn.innerHTML = 'save';
-			okBtn.addEventListener('click', function(e) {
+			okBtn.addEventListener('click', submit, false);
+			editor.appendChild(okBtn);
+			
+			el.parentNode.insertBefore(editor, el.nextSibling);
+			
+			el.addEventListener('click', enterEditMode, false);
+			
+			function enterEditMode(e) {
+				e.preventDefault();
+				e.stopPropagation();
+		
+				var text = el.innerHTML;
+				textArea.value = text;
+				
+				show();
+			}
+			
+			function submit(e) {
 				e.preventDefault();
 				e.stopPropagation();
 				
@@ -37,20 +54,7 @@
 						console.log('unblok UI');
 					})
 				;
-			}, false);
-			editor.appendChild(okBtn);
-			
-			el.parentNode.insertBefore(editor, el.nextSibling);
-			
-			el.addEventListener('click', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-		
-				var text = el.innerHTML;
-				textArea.value = text;
-				
-				show();
-			}, false);
+			}
 			
 			function show() {
 				elOriginalDisplayMode = window.getComputedStyle(el, null).display;
