@@ -18,6 +18,9 @@
 					<button class="button submit">Save</button>
 					<button class="button cancel">Cancel</button>
 				</div>
+				<div class="overlay">
+					<div class="msg">${cfg.activityIndicator.message}</div>
+				</div>
 			`;
 			
 			el.textArea = el.editor.querySelector('textArea');
@@ -107,14 +110,28 @@
 			.editor.visible { 
 				display: inline-block; 
 			}
-			.editor.visible.blocked:after {
-				content: '';
+			.editor .overlay {
 				position: absolute;
 				left: 0;
 				top: 0;
 				width: 100%;
 				height: 100%;
 				background-color: rgba(0,0,0, 0.5);
+				opacity: 0;
+				transition: opacity 0.3s;
+				pointer-events: none;
+			}
+			.editor.blocked .overlay {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			.editor .overlay .msg {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: gray;
+				color: white;
 			}
 		`;
 		
