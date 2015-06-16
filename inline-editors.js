@@ -7,21 +7,21 @@
 		this.processNewText = cfg.processNewText;
 		
 		var editor = this.editor = document.createElement('div');
-		editor.className = 'editor';
+		editor.className = 'ined';
 		editor.innerHTML = `
-			<textarea></textarea>
-			<div class="toolbar">
-				<button class="button submit">Save</button>
-				<button class="button cancel">Cancel</button>
+			<textarea class="ined__text"></textarea>
+			<div class="ined__toolbar">
+				<button class="ined__toolbar__submit">Save</button>
+				<button class="ined__toolbar__cancel">Cancel</button>
 			</div>
-			<div class="overlay">
-				<div class="msg">${cfg.activityIndicator.message}</div>
+			<div class="ined__overlay">
+				<div class="ined__overlay__msg">${cfg.activityIndicator.message}</div>
 			</div>
 		`;
 			
-		var textArea = this.textArea = editor.querySelector('textArea');
-		var submit = this.submit = editor.querySelector('.button.submit');
-		var cancel = this.cancel = editor.querySelector('.button.cancel');
+		var textArea = this.textArea = editor.querySelector('.ined__text');
+		var submit = this.submit = editor.querySelector('.ined__toolbar__submit');
+		var cancel = this.cancel = editor.querySelector('.ined__toolbar__cancel');
 			
 		this.el.addEventListener('click', this.enterEditMode.bind(this), false);
 		submit.addEventListener('click', this.submitListener.bind(this), false);
@@ -44,7 +44,7 @@
 		e.preventDefault();
 		e.stopPropagation();
 			
-		this.editor.classList.add('blocked');
+		this.editor.classList.add('ined--blocked');
 			
 		var newText = this.textArea.value;
 			
@@ -58,7 +58,7 @@
 				}.bind(this)
 			)
 			.then(function() {
-				this.editor.classList.remove('blocked');
+				this.editor.classList.remove('ined--blocked');
 				this.hide();
 			}.bind(this))
 		;
@@ -75,39 +75,39 @@
 		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
 		this.el.style.display = 'none';
 			
-		this.editor.classList.add('visible');
+		this.editor.classList.add('ined--visible');
 		
 		this.textArea.select();
 	};
 		
 	C.prototype.hide = function() {
-		this.editor.classList.remove('visible');
+		this.editor.classList.remove('ined--visible');
 		this.el.style.display = this.elOriginalDisplayMode;
 	};
 	
 	function installCSS() {
 		var styleEl = document.createElement('style');
-		styleEl.id = "inline-editor-css";
+		styleEl.id = "ined-css";
 		
 		var css = `
-			.editor { 
+			.ined { 
 				position: relative; 
 				width: 100%; 
 				display: none; 
 			}
-			.editor textarea { 
+			.ined__text { 
 				width: 100%; 
 				display: block; 
 			}
-			.editor .toolbar { 
+			.ined__toolbar { 
 				background: #e6e2e2;
 				padding: 5px;
 				text-align: center;
 			}
-			.editor.visible { 
+			.ined--visible { 
 				display: inline-block; 
 			}
-			.editor .overlay {
+			.ined__overlay {
 				position: absolute;
 				left: 0;
 				top: 0;
@@ -118,11 +118,11 @@
 				transition: opacity 0.3s;
 				pointer-events: none;
 			}
-			.editor.blocked .overlay {
+			.ined--blocked .ined__overlay {
 				opacity: 1;
 				pointer-events: auto;
 			}
-			.editor .overlay .msg {
+			.ined__overlay__msg {
 				position: absolute;
 				top: 50%;
 				left: 50%;
