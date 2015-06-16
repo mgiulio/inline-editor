@@ -55,6 +55,12 @@ inlineEditor.install({
 
 
 function sendToServer(el, text) {
+	var
+		rnd = Math.random
+		minTime = 1,
+		maxTime = 5,
+		successProb = 0.9
+	;
 	return new Promise(function(resolve, reject) {
 		var json = {
 			el: el,
@@ -64,9 +70,13 @@ function sendToServer(el, text) {
 		console.log(json);
 		
 		setTimeout(function() {
-			resolve(text);
-			//reject();
-		}, 2000);
+			if (rnd() <= successProb)
+				resolve(text);
+			else {
+				console.log('failure');
+				reject('Cannot save text');
+			}
+		}, minTime + rnd()*maxTime * 1000);
 	});
 	
 }
