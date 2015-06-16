@@ -7,7 +7,7 @@
 
 <body>
 <header>
-	<h1 class="editable">mgiulio</h1>
+	<h1 class="title">mgiulio</h1>
 	<p>A paragraph</p>
 </header>
 
@@ -18,9 +18,9 @@
 
 <section class="aux">
 	<aside class="widget about">
-		<h2 class="title editable">About Me</h2>
+		<h2 class="title">About Me</h2>
 		<img class="avatar">
-		<p class="desc editable">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
+		<p class="desc">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
 	</aside>
 </section>
 
@@ -29,32 +29,23 @@
 
 <script src="../../inline-editors.js"></script>
 <script>
-inlineEditor.install({
-	selector: 'header .editable',
+var aboutDescEditor = new InlineEditor({
+	el: document.querySelector('.aux .about .desc'),
 	processNewText: sendToServer,
 	activityIndicator: {
-		message: 'Saving header...'
+		message: 'Saving about desc...'
 	}
 });
 
-inlineEditor.install({
-	selector: '.aux .editable',
+var pageTileEditor = new InlineEditor({
+	el: document.querySelector('header .title'),
 	processNewText: sendToServer,
 	activityIndicator: {
-		message: 'Saving aux...'
+		message: 'Saving header title...'
 	}
 });
 
-inlineEditor.install({
-	selector: '.aux .editable',
-	processNewText: sendToServer,
-	activityIndicator: {
-		message: 'Saving aux1...'
-	}
-})
-
-
-function sendToServer(el, text) {
+function sendToServer(text, el) {
 	var
 		rnd = Math.random
 		minTime = 1,
