@@ -1,3 +1,55 @@
-/* .editable {
-	outline: 1px solid red;
-} */
+@import url(normalize.css);
+
+body {
+	font-size: 14px;
+}
+
+.page-wrap {
+	width: 960px;
+	margin: 0 auto;
+}
+.page-wrap:after {
+	content: '';
+	clear: both;
+	display: table;
+}
+
+.masthead {
+	background: #333;
+	color: #aaa;
+}
+.masthead__title {
+	margin: 0 0 40px;
+	text-align: center;
+	
+	font-family: serif;
+	font-size: 2em;
+}
+.masthead__subtitle {
+	font-family: sans-serif;
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.main {
+	box-sizing: border-box;
+	width: 75%;
+	float: left;
+	padding-right: 10px;
+}
+.aux {
+	box-sizing: border-box;
+	width: 25%;
+	float: right;
+	padding-left: 10px;
+}
+
+.footer {
+}
+.footer__credits {
+	text-align: center;
+	
+	font-family: sans-serif;
+	text-transform: uppercase;
+	font-size: 0.8em;
+}

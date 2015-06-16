@@ -6,72 +6,49 @@
 </head>
 
 <body>
-<header>
-	<h1 class="title">mgiulio</h1>
-	<p>A paragraph</p>
+<header class="masthead">
+	<div class="page-wrap">
+		<h1 class="masthead__title">mgiulio</h1>
+		<h2 class="masthead__subtitle">A paragraph</h2>
+	</div>
 </header>
-
-<section class="main">
-	<h1>Tweets</h1>
-	<p>A paragraph</p>
-</section>
-
-<section class="aux">
-	<aside class="widget about">
-		<h2 class="title">About Me</h2>
-		<img class="avatar">
-		<p class="desc">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
-	</aside>
-</section>
-
-<footer>
+<div class="page-wrap">
+	<div class="main">
+		<section>
+			<h1>My Collections</h1>
+			<p>A paragraph</p>
+		</section>
+		<section>
+			<h1>Portfolio</h1>
+		</section>
+		<section>
+			<h1>Followers</h1>
+			<h1>Following</h1>
+		</section>
+	</div>
+	<section class="aux">
+		<aside class="widget about">
+			<h2 class="title">About Me</h2>
+			<img class="avatar">
+			<p class="desc">Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah. Blah blah.</p>
+		</aside>
+		<aside class="widget location">
+			<p>Location</p>
+		</aside>
+		<aside class="widget website">
+			<p>http://mgiulio.github.io</p>
+		</aside>
+		<aside class="widget socials">
+			<p>http://mgiulio.github.io</p>
+		</aside>
+	</section>
+</div>
+<footer class="footer">
+	<p class="footer__credits">Crafted with &hearts; MG </p>
 </footer>
 
 <script src="../../inline-editor.js"></script>
-<script>
-var aboutDescEditor = new InlineEditor({
-	el: document.querySelector('.aux .about .desc'),
-	processNewText: sendToServer,
-	activityIndicator: {
-		message: 'Saving about desc...'
-	}
-});
-
-var pageTileEditor = new InlineEditor({
-	el: document.querySelector('header .title'),
-	processNewText: sendToServer,
-	activityIndicator: {
-		message: 'Saving header title...'
-	}
-});
-
-function sendToServer(text, el) {
-	var
-		rnd = Math.random
-		minTime = 1,
-		maxTime = 5,
-		successProb = 0.9
-	;
-	return new Promise(function(resolve, reject) {
-		var json = {
-			el: el,
-			text: text
-		};
-		
-		console.log(json);
-		
-		setTimeout(function() {
-			if (rnd() <= successProb)
-				resolve(text);
-			else {
-				console.log('failure');
-				reject('Cannot save text');
-			}
-		}, minTime + rnd()*maxTime * 1000);
-	});
-	
-}
-</script>
+<script src="script.js"></script>
 </body>
 
 </html>
