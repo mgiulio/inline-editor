@@ -3,9 +3,9 @@
 	init();
 	
 	function init() {
-		var mastheadTitleEl = document.querySelector('.masthead__title');
+		var mastheadTitleEl = document.querySelector('.masthead .title');
 		var mastheadTitleEditor = new InlineEditor({
-			el: document.querySelector('.masthead__title'),
+			el: mastheadTitleEl,
 			processNewText: sendToServer,
 			activityIndicator: {
 				message: 'Saving header title...'
@@ -13,21 +13,25 @@
 		});
 		mastheadTitleEl.addEventListener('click', mastheadTitleEditor.activate.bind(mastheadTitleEditor), false);
 		
-		var mastheadSubTitleEditor = new InlineEditor({
-			el: document.querySelector('.masthead__subtitle'),
+		var mastheadSubTitleEl = document.querySelector('.masthead .subtitle');
+		 var mastheadSubTitleEditor = new InlineEditor({
+			el: mastheadSubTitleEl,
 			processNewText: sendToServer,
 			activityIndicator: {
 				message: 'Saving header title...'
 			}
 		});
+		mastheadSubTitleEl.addEventListener('click', mastheadSubTitleEditor.activate.bind(mastheadSubTitleEditor), false);
 
+		var aboutDescEl = document.querySelector('.aux .about .description');
 		var aboutDescEditor = new InlineEditor({
-			el: document.querySelector('.aux .about .desc'),
+			el: aboutDescEl,
 			processNewText: sendToServer,
 			activityIndicator: {
 				message: 'Saving about desc...'
 			}
 		});
+		aboutDescEl.addEventListener('click', aboutDescEditor.activate.bind(aboutDescEditor), false);
 	}
 	
 	function sendToServer(text, el) {
