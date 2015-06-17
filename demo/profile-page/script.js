@@ -10,7 +10,7 @@
 				message: 'Saving header title...'
 			}
 		});
-
+		
 		var mastheadSubTitleEditor = new InlineEditor({
 			el: document.querySelector('.masthead__subtitle'),
 			processNewText: sendToServer,

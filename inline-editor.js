@@ -3,6 +3,9 @@
 	installCSS();
 	
 	function C(cfg) {
+		if (isEditorInstalledOn(cfg.el))
+			throw Error(`Inline Editor already installed on element with id="${cfg.el.id}" and class="${cfg.el.className}"`);
+		
 		this.el = cfg.el;
 		this.processNewText = cfg.processNewText;
 		
@@ -135,6 +138,15 @@
 		styleEl.textContent = css;
 		
 		document.head.appendChild(styleEl);
+	}
+	
+	function isEditorInstalledOn(el) {
+		var nextEl = el.nextElementSibling;
+		
+		if (!nextEl)
+			return false;
+		
+		return nextEl.classList.contains('ined');
 	}
 		
 	window.InlineEditor = C;
