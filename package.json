@@ -1,0 +1,14 @@
+{
+  "name": "inline-editor",
+  "version": "1.0.0",
+  "description": "A JavaScript component for inline editing",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Giulio 'mgiulio' Mainardi",
+  "license": "ISC"
+}
