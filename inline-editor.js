@@ -58,6 +58,7 @@
 			
 		this.editor.classList.add('ined--visible');
 		
+		this.oldText = this.textArea.value;
 		this.textArea.select();
 	};
 	
@@ -65,9 +66,13 @@
 		e.preventDefault();
 		e.stopPropagation();
 			
-		this.editor.classList.add('ined--blocked');
-			
 		var newText = this.textArea.value;
+		if (newText === this.oldText) {
+			this.hide();
+			return;
+		}
+		
+		this.editor.classList.add('ined--blocked');
 			
 		this.processNewText(newText, this.el)
 			.then(
