@@ -3,6 +3,9 @@
 	installCSS();
 	
 	function C(cfg) {
+		if (!(cfg.el instanceof Element))
+			throw Error('cfg.el is not an instance of Element');
+		
 		if (isEditorInstalledOn(cfg.el))
 			throw Error(`Inline Editor already installed on element with id="${cfg.el.id}" and class="${cfg.el.className}"`);
 
