@@ -3,6 +3,7 @@
 	init();
 	
 	function init() {
+		var mastheadTitleEl = document.querySelector('.masthead__title');
 		var mastheadTitleEditor = new InlineEditor({
 			el: document.querySelector('.masthead__title'),
 			processNewText: sendToServer,
@@ -10,8 +11,9 @@
 				message: 'Saving header title...'
 			}
 		});
+		mastheadTitleEl.addEventListener('click', mastheadTitleEditor.activate.bind(mastheadTitleEditor), false);
 		
-		var mastheadSubTitleEditor = new InlineEditor({
+		/* var mastheadSubTitleEditor = new InlineEditor({
 			el: document.querySelector('.masthead__subtitle'),
 			processNewText: sendToServer,
 			activityIndicator: {
@@ -25,7 +27,7 @@
 			activityIndicator: {
 				message: 'Saving about desc...'
 			}
-		});
+		}); */
 	}
 	
 	function sendToServer(text, el) {

@@ -26,21 +26,22 @@
 		var submit = this.submit = editor.querySelector('.ined__toolbar__submit');
 		var cancel = this.cancel = editor.querySelector('.ined__toolbar__cancel');
 			
-		this.el.addEventListener('click', this.enterEditMode.bind(this), false);
 		submit.addEventListener('click', this.submitListener.bind(this), false);
 		cancel.addEventListener('click', this.cancelListener.bind(this), false);
 			
 		this.el.parentNode.insertBefore(editor, this.el.nextSibling);
 	}
 	
-	C.prototype.enterEditMode = function(e) {
-		e.preventDefault();
-		e.stopPropagation();
-	
+	C.prototype.activate = function(e) {
 		var text = this.el.innerHTML;
 		this.textArea.value = text;
 			
-		this.show();
+		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
+		this.el.style.display = 'none';
+			
+		this.editor.classList.add('ined--visible');
+		
+		this.textArea.select();
 	};
 	
 	C.prototype.submitListener = function(e) {
@@ -73,16 +74,7 @@
 			
 		this.hide();
 	};
-		
-	C.prototype.show = function() {
-		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
-		this.el.style.display = 'none';
 			
-		this.editor.classList.add('ined--visible');
-		
-		this.textArea.select();
-	};
-		
 	C.prototype.hide = function() {
 		this.editor.classList.remove('ined--visible');
 		this.el.style.display = this.elOriginalDisplayMode;
