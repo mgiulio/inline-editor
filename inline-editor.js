@@ -5,16 +5,21 @@
 	function C(cfg) {
 		if (!(cfg.el instanceof Element))
 			throw Error('cfg.el is not an instance of Element');
-		
 		if (isEditorInstalledOn(cfg.el))
 			throw Error(`Inline Editor already installed on element with id="${cfg.el.id}" and class="${cfg.el.className}"`);
-
 		this.el = cfg.el;
-		this.processNewText = cfg.processNewText;
+		
+		if ('processNewText' in cfg)
+			if (typeof cfg.processNewText !== 'function')
+				throw Error('cfg.processNewText is not a function');
+			else
+				this.processNewText = cfg.processNewText;
+		else
+			this.processNewText = defaultProcessNewText;
 		
 		this.install(cfg);
 	}
-	
+
 	C.prototype.install = function(cfg) {
 		var editor = this.editor = document.createElement('div');
 		editor.className = 'ined';
@@ -151,6 +156,12 @@
 			return false;
 		
 		return nextEl.classList.contains('ined');
+	}
+	
+	function defaultProcessNewText(text, el) {
+		return new Promise(function(resolve, reject) {
+			resolve(text);
+		});
 	}
 		
 	window.InlineEditor = C;
