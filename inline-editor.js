@@ -5,10 +5,14 @@
 	function C(cfg) {
 		if (isEditorInstalledOn(cfg.el))
 			throw Error(`Inline Editor already installed on element with id="${cfg.el.id}" and class="${cfg.el.className}"`);
-		
+
 		this.el = cfg.el;
 		this.processNewText = cfg.processNewText;
 		
+		this.install(cfg);
+	}
+	
+	C.prototype.install = function(cfg) {
 		var editor = this.editor = document.createElement('div');
 		editor.className = 'ined';
 		editor.innerHTML = `
@@ -30,7 +34,12 @@
 		cancel.addEventListener('click', this.cancelListener.bind(this), false);
 			
 		this.el.parentNode.insertBefore(editor, this.el.nextSibling);
-	}
+	};
+	
+	C.prototype.uninstall = function() {
+		this.editor.parentNode.removeChild(this.editor);
+		this.textArea = this.submit = this.cancel = this.editor = null;
+	};
 	
 	C.prototype.activate = function(e) {
 		var text = this.el.innerHTML;
