@@ -52,7 +52,9 @@
 	C.prototype.activate = function(e) {
 		var text = this.el.innerHTML;
 		this.textArea.value = text;
-			
+		var magicValue = 0;
+		this.textArea.style.height = this.el.offsetHeight + magicValue + 'px';
+		
 		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
 		this.el.style.display = 'none';
 			
@@ -113,8 +115,10 @@
 				display: none; 
 			}
 			.ined__text { 
-				width: 100%; 
 				display: block; 
+				box-sizing: border-box;
+				width: 100%; 
+				/*padding: 10px;*/
 			}
 			.ined__toolbar { 
 				background: #e6e2e2;
