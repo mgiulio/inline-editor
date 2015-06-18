@@ -1,37 +1,72 @@
 (function() {
 	
+	var
+		editMode = true
+	;
+	
 	init();
 	
 	function init() {
-		var mastheadTitleEl = document.querySelector('.masthead .title');
-		var mastheadTitleEditor = new InlineEditor({
-			el: mastheadTitleEl,
-			processNewText: sendToServer,
-			activityIndicator: {
-				message: 'Saving header title...'
-			}
-		});
-		mastheadTitleEl.addEventListener('click', mastheadTitleEditor.activate.bind(mastheadTitleEditor), false);
+		var
+			el,
+			editor
+		;
 		
-		var mastheadSubTitleEl = document.querySelector('.masthead .subtitle');
-		 var mastheadSubTitleEditor = new InlineEditor({
-			el: mastheadSubTitleEl,
+		el = document.querySelector('.masthead .title');
+		editor = new InlineEditor({
+			el: el,
 			processNewText: sendToServer,
 			activityIndicator: {
 				message: 'Saving header title...'
 			}
 		});
-		mastheadSubTitleEl.addEventListener('click', mastheadSubTitleEditor.activate.bind(mastheadSubTitleEditor), false);
+		el.editor = editor;
+		
+		el = document.querySelector('.masthead .subtitle');
+		editor = new InlineEditor({
+			el: el,
+			processNewText: sendToServer,
+			activityIndicator: {
+				message: 'Saving header title...'
+			}
+		});
+		el.editor = editor;
 
-		var aboutDescEl = document.querySelector('.aux .about .description');
-		var aboutDescEditor = new InlineEditor({
-			el: aboutDescEl,
+		el = document.querySelector('.aux .about .description');
+		editor = new InlineEditor({
+			el: el,
 			processNewText: sendToServer,
 			activityIndicator: {
 				message: 'Saving about desc...'
 			}
 		});
-		aboutDescEl.addEventListener('click', aboutDescEditor.activate.bind(aboutDescEditor), false);
+		el.editor = editor;
+		
+		document.body.addEventListener('click', activateEditor, false);
+		document.body.querySelector('.edit-mode-toggle').addEventListener('change', toggleEditMode, false);
+	}
+	
+	function activateEditor(e) {
+		if (!editMode)
+			return;
+		
+		var target = e.target;
+		
+		if (!target.classList.contains('editable'))
+			return;
+		
+		e.preventDefault();
+		e.stopPropagation();
+		
+		target.editor.activate();
+	}
+	
+	function toggleEditMode(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		document.body.classList.toggle('edit-mode');
+		editMode = ! editMode;
 	}
 	
 	function sendToServer(text, el) {
