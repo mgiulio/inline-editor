@@ -1,1 +1,178 @@
-"use strict";!function(){function e(e){if(!(e.el instanceof Element))throw Error("cfg.el is not an instance of Element");if(n(e.el))throw Error('Inline Editor already installed on element with id="'+e.el.id+'" and class="'+e.el.className+'"');if(this.el=e.el,"processNewText"in e){if("function"!=typeof e.processNewText)throw Error("cfg.processNewText is not a function");this.processNewText=e.processNewText}else this.processNewText=i;this.install(e)}function t(){var e=document.createElement("style");e.id="ined-css";var t="\n			.ined { \n				position: relative; \n				width: 100%; \n				display: none; \n			}\n			.ined__text { \n				display: block; \n				box-sizing: border-box;\n				width: 100%; \n				/*padding: 10px;*/\n			}\n			.ined__toolbar { \n				background: #e6e2e2;\n				padding: 5px;\n				text-align: center;\n			}\n			.ined--visible { \n				display: inline-block; \n			}\n			.ined__overlay {\n				position: absolute;\n				left: 0;\n				top: 0;\n				width: 100%;\n				height: 100%;\n				background-color: rgba(0,0,0, 0.5);\n				opacity: 0;\n				transition: opacity 0.3s;\n				pointer-events: none;\n			}\n			.ined--blocked .ined__overlay {\n				opacity: 1;\n				pointer-events: auto;\n			}\n			.ined__overlay__msg {\n				position: absolute;\n				top: 50%;\n				left: 50%;\n				transform: translate(-50%, -50%);\n				background: gray;\n				color: white;\n			}\n		";e.textContent=t,document.head.appendChild(e)}function n(e){var t=e.nextElementSibling;return t?t.classList.contains("ined"):!1}function i(e,t){return new Promise(function(t,n){t(e)})}t(),e.prototype.install=function(e){var t=this.editor=document.createElement("div");t.className="ined",t.innerHTML='\n			<textarea class="ined__text"></textarea>\n			<div class="ined__toolbar">\n				<button class="ined__toolbar__submit">Save</button>\n				<button class="ined__toolbar__cancel">Cancel</button>\n			</div>\n			<div class="ined__overlay">\n				<div class="ined__overlay__msg">'+e.activityIndicator.message+"</div>\n			</div>\n		";var n=(this.textArea=t.querySelector(".ined__text"),this.submit=t.querySelector(".ined__toolbar__submit")),i=this.cancel=t.querySelector(".ined__toolbar__cancel");n.addEventListener("click",this.submitListener.bind(this),!1),i.addEventListener("click",this.cancelListener.bind(this),!1),this.el.parentNode.insertBefore(t,this.el.nextSibling)},e.prototype.uninstall=function(){this.editor.parentNode.removeChild(this.editor),this.textArea=this.submit=this.cancel=this.editor=null},e.prototype.activate=function(e){var t=this.el.innerHTML;this.textArea.value=t;var n=0;this.textArea.style.height=this.el.offsetHeight+n+"px",this.elOriginalDisplayMode=window.getComputedStyle(this.el,null).display,this.el.style.display="none",this.editor.classList.add("ined--visible"),this.oldText=this.textArea.value,this.textArea.select()},e.prototype.submitListener=function(e){e.preventDefault(),e.stopPropagation();var t=this.textArea.value;return t===this.oldText?void this.hide():(this.editor.classList.add("ined--blocked"),void this.processNewText(t,this.el).then(function(e){this.el.innerHTML=e}.bind(this),function(){}.bind(this)).then(function(){this.editor.classList.remove("ined--blocked"),this.hide()}.bind(this)))},e.prototype.cancelListener=function(e){e.preventDefault(),e.stopPropagation(),this.hide()},e.prototype.hide=function(){this.editor.classList.remove("ined--visible"),this.el.style.display=this.elOriginalDisplayMode},window.InlineEditor=e}();
+(function() {
+	
+	installCSS();
+	
+	function C(cfg) {
+		if (!(cfg.el instanceof Element))
+			throw Error('cfg.el is not an instance of Element');
+		if (isEditorInstalledOn(cfg.el))
+			throw Error(`Inline Editor already installed on element with id="${cfg.el.id}" and class="${cfg.el.className}"`);
+		this.el = cfg.el;
+		
+		if ('processNewText' in cfg)
+			if (typeof cfg.processNewText !== 'function')
+				throw Error('cfg.processNewText is not a function');
+			else
+				this.processNewText = cfg.processNewText;
+		else
+			this.processNewText = defaultProcessNewText;
+		
+		this.install(cfg);
+	}
+
+	C.prototype.install = function(cfg) {
+		var editor = this.editor = document.createElement('div');
+		editor.className = 'ined';
+		editor.innerHTML = `
+			<textarea class="ined__text"></textarea>
+			<div class="ined__toolbar">
+				<button class="ined__toolbar__submit">Save</button>
+				<button class="ined__toolbar__cancel">Cancel</button>
+			</div>
+			<div class="ined__overlay">
+				<div class="ined__overlay__msg">${cfg.activityIndicator.message}</div>
+			</div>
+		`;
+			
+		var textArea = this.textArea = editor.querySelector('.ined__text');
+		var submit = this.submit = editor.querySelector('.ined__toolbar__submit');
+		var cancel = this.cancel = editor.querySelector('.ined__toolbar__cancel');
+			
+		submit.addEventListener('click', this.submitListener.bind(this), false);
+		cancel.addEventListener('click', this.cancelListener.bind(this), false);
+			
+		this.el.parentNode.insertBefore(editor, this.el.nextSibling);
+	};
+	
+	C.prototype.uninstall = function() {
+		this.editor.parentNode.removeChild(this.editor);
+		this.textArea = this.submit = this.cancel = this.editor = null;
+	};
+	
+	C.prototype.activate = function(e) {
+		var text = this.el.innerHTML;
+		this.textArea.value = text;
+		var magicValue = 0;
+		this.textArea.style.height = this.el.offsetHeight + magicValue + 'px';
+		
+		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
+		this.el.style.display = 'none';
+			
+		this.editor.classList.add('ined--visible');
+		
+		this.oldText = this.textArea.value;
+		this.textArea.select();
+	};
+	
+	C.prototype.submitListener = function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+			
+		var newText = this.textArea.value;
+		if (newText === this.oldText) {
+			this.hide();
+			return;
+		}
+		
+		this.editor.classList.add('ined--blocked');
+			
+		this.processNewText(newText, this.el)
+			.then(
+				function(processedText) {
+					this.el.innerHTML = processedText;
+					
+				}.bind(this),
+				function() {
+				}.bind(this)
+			)
+			.then(function() {
+				this.editor.classList.remove('ined--blocked');
+				this.hide();
+			}.bind(this))
+		;
+	};
+		
+	C.prototype.cancelListener = function(e) {	
+		e.preventDefault();
+		e.stopPropagation();
+			
+		this.hide();
+	};
+			
+	C.prototype.hide = function() {
+		this.editor.classList.remove('ined--visible');
+		this.el.style.display = this.elOriginalDisplayMode;
+	};
+	
+	function installCSS() {
+		var styleEl = document.createElement('style');
+		styleEl.id = "ined-css";
+		
+		var css = `
+			.ined { 
+				position: relative; 
+				width: 100%; 
+				display: none; 
+			}
+			.ined__text { 
+				display: block; 
+				box-sizing: border-box;
+				width: 100%; 
+				/*padding: 10px;*/
+			}
+			.ined__toolbar { 
+				background: #e6e2e2;
+				padding: 5px;
+				text-align: center;
+			}
+			.ined--visible { 
+				display: inline-block; 
+			}
+			.ined__overlay {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0, 0.5);
+				opacity: 0;
+				transition: opacity 0.3s;
+				pointer-events: none;
+			}
+			.ined--blocked .ined__overlay {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			.ined__overlay__msg {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: gray;
+				color: white;
+			}
+		`;
+		
+		styleEl.textContent = css;
+		
+		document.head.appendChild(styleEl);
+	}
+	
+	function isEditorInstalledOn(el) {
+		var nextEl = el.nextElementSibling;
+		
+		if (!nextEl)
+			return false;
+		
+		return nextEl.classList.contains('ined');
+	}
+	
+	function defaultProcessNewText(text, el) {
+		return new Promise(function(resolve, reject) {
+			resolve(text);
+		});
+	}
+		
+	window.InlineEditor = C;
+
+})();

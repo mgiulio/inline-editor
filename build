@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var 
 	fse = require('fs-extra'),
 	FILE_ENCODING = 'utf-8',
@@ -6,21 +8,35 @@ var
 	dest = 'dist/inline-editor.js'
 ;
 
+var targets = {
+	rel: function() {
+		copyToDist(minify(transpile(fse.readFileSync(src))));
+	},
+	copy: function() {
+		copyToDist(fse.readFileSync(src));
+	},
+	transpile: function() {
+		copyToDist(transpile(fse.readFileSync(src)));
+	}
+};
+
 run();
 
 function run() {
+	var target = 'copy';
+	
 	try {
-		rel();
+		targets[target]();
 	}
 	catch(e) {
 		console.log('Build process failed: ' + e.message);
 	}
 }	
 
-function rel() {;
-	copyToDist(minify(transpile(fse.readFileSync(src))));
-}
-
+/*
+ * Tasks
+ */
+ 
 function transpile(code) {
 	console.log('Transpilation...');
 	
