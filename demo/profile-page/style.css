@@ -86,4 +86,7 @@ body {
 	color: #888;
 }
 
-
+.editable:hover {
+	outline: 1px solid orange;
+	cursor: pointer;
+}
