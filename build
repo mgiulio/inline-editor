@@ -9,11 +9,11 @@ var
 ;
 
 var targets = {
+	dev: function() {
+		copyToDist(fse.readFileSync(src));
+	},
 	rel: function() {
 		copyToDist(minify(transpile(fse.readFileSync(src))));
-	},
-	copy: function() {
-		copyToDist(fse.readFileSync(src));
 	},
 	transpile: function() {
 		copyToDist(transpile(fse.readFileSync(src)));
@@ -23,9 +23,17 @@ var targets = {
 run();
 
 function run() {
-	var target = 'copy';
+	var 
+		argv = process.argv,
+		target
+	;
+	if (argv.length === 3)
+		target = argv[2];
+	else
+		target = 'dev';
 	
 	try {
+		console.log('Running ' + target + ' target');
 		targets[target]();
 	}
 	catch(e) {
