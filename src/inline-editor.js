@@ -50,17 +50,18 @@
 	};
 	
 	C.prototype.activate = function(e) {
-		var text = this.el.innerHTML;
-		this.textArea.value = text;
-		var magicValue = 0;
-		this.textArea.style.height = this.el.offsetHeight + magicValue + 'px';
+		this.oldText = this.el.innerHTML;
+		this.textArea.value = this.oldText;
+		
+		var textAreaHeight = this.el.offsetHeight;
+		if (textAreaHeight < 24)
+			textAreaHeight = 24;
+		this.textArea.style.height = textAreaHeight + 'px';
 		
 		this.elOriginalDisplayMode = window.getComputedStyle(this.el, null).display;
 		this.el.style.display = 'none';
 			
 		this.editor.classList.add('ined--visible');
-		
-		this.oldText = this.textArea.value;
 		this.textArea.select();
 	};
 	
@@ -118,7 +119,7 @@
 				display: block; 
 				box-sizing: border-box;
 				width: 100%; 
-				/*padding: 10px;*/
+				resize: vertical;
 			}
 			.ined__toolbar { 
 				background: #e6e2e2;
