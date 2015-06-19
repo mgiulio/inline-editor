@@ -24,7 +24,7 @@
 		var editor = this.editor = document.createElement('div');
 		editor.className = 'ined';
 		editor.innerHTML = `
-			<textarea class="ined__text"></textarea>
+			<textarea class="ined__textarea"></textarea>
 			<div class="ined__toolbar">
 				<button class="ined__toolbar__submit">Save</button>
 				<button class="ined__toolbar__cancel">Cancel</button>
@@ -34,7 +34,7 @@
 			</div>
 		`;
 			
-		var textArea = this.textArea = editor.querySelector('.ined__text');
+		var textArea = this.textArea = editor.querySelector('.ined__textarea');
 		var submit = this.submit = editor.querySelector('.ined__toolbar__submit');
 		var cancel = this.cancel = editor.querySelector('.ined__toolbar__cancel');
 			
@@ -115,7 +115,7 @@
 				width: 100%; 
 				display: none; 
 			}
-			.ined__text { 
+			.ined__textarea { 
 				display: block; 
 				box-sizing: border-box;
 				width: 100%; 
@@ -156,7 +156,7 @@
 		
 		styleEl.textContent = css;
 		
-		document.head.appendChild(styleEl);
+		document.head.insertBefore(styleEl, document.head.firstElementChild);
 	}
 	
 	function isEditorInstalledOn(el) {

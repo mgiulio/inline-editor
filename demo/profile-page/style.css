@@ -106,3 +106,16 @@ body {
 	cursor: pointer;
 	-webkit-user-select: none;
 }
+
+.ined__textarea {
+}
+.ined__toolbar {
+}
+.ined__toolbar__submit {
+}
+.ined__toolbar__cancel {
+}
+.ined__overlay {
+}
+.ined__overlay__msg {
+}
