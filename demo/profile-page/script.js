@@ -89,6 +89,7 @@
 					resolve(text);
 				else {
 					console.log('failure');
+					alert('Persistence on server has failed');
 					reject('Cannot save text');
 				}
 			}, minTime + rnd()*maxTime * 1000);
