@@ -94,11 +94,13 @@ body {
 	right: 40px;
 	
 	padding: 10px 20px;
-	border: 1px solid #aaa;
 	
 	font-family: sans-serif;
 	font-size: 1em;
 	color: #aaa;
+}
+.edit-mode-toggle input[type="checkbox"] {
+	vertical-align: middle;
 }
 
 .edit-mode .editable:hover {
